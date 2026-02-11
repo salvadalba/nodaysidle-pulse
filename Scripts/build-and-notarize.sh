@@ -13,14 +13,19 @@ RELEASE=.build/release
 echo "Building release binary…”
 swift build -c release
 
+echo "Generating app icon…"
+./Scripts/generate-icon.sh 2>/dev/null || true
+
 echo "Creating .app bundle…”
 rm -rf "${RELEASE}/${APP_NAME}"
 mkdir -p "${RELEASE}/${APP_NAME}/Contents/MacOS"
 mkdir -p "${RELEASE}/${APP_NAME}/Contents/Resources"
 cp "${RELEASE}/${NAME}" "${RELEASE}/${APP_NAME}/Contents/MacOS/"
+cp Sources/Pulse/Resources/logo.svg "${RELEASE}/${APP_NAME}/Contents/Resources/" 2>/dev/null || true
+[[ -f .build/AppIcon.icns ]] && cp .build/AppIcon.icns "${RELEASE}/${APP_NAME}/Contents/Resources/"
 cp Sources/Pulse/Pulse.entitlements "${RELEASE}/${APP_NAME}/Contents/" 2>/dev/null || true
 
-# Minimal Info.plist
+# Info.plist with icon
 cat > "${RELEASE}/${APP_NAME}/Contents/Info.plist" << 'PLIST'
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -30,7 +35,12 @@ cat > "${RELEASE}/${APP_NAME}/Contents/Info.plist" << 'PLIST'
 	<key>CFBundleIdentifier</key><string>com.pulse.app</string>
 	<key>CFBundleName</key><string>Pulse</string>
 	<key>CFBundlePackageType</key><string>APPL</string>
+	<key>CFBundleShortVersionString</key><string>1.0.0</string>
+	<key>CFBundleVersion</key><string>1</string>
 	<key>LSMinimumSystemVersion</key><string>15.0</string>
+	<key>CFBundleIconFile</key><string>AppIcon</string>
+	<key>NSHighResolutionCapable</key><true/>
+	<key>LSApplicationCategoryType</key><string>public.app-category.utilities</string>
 </dict>
 </plist>
 PLIST
