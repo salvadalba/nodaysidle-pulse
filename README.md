@@ -92,5 +92,5 @@ Use and modify as you like. If you ship a derivative, a mention is appreciated b
 ---
 
 <p align="center">
-  <sub>Made with Swift &amp; SwiftUI · No telemetry, no sign-in</sub>
+  <sub>Made with Swift &amp; SwiftUI · No telemetry, no sign-in, nodaysidle</sub>
 </p>
